@@ -21,28 +21,60 @@ export default {
     TodoList,
     TodoFooter,
   },
+
+  created() {
+    this.selTodoList();
+  },
+
   data() {
     return {
       id: 0,
       todoList: []
     }
   },
+
   methods: {
+    selTodoList() {
+      this.$http.get('/api/selTodoList').then((res) => {
+        // console.log(res.data);
+        this.todoList = res.data;
+      })
+    },
+
     parentSendTodo(todo) {
-      var obj = {
-        id: this.id++,
+      let obj = {
         todo: todo
       }
-      this.todoList.push(obj)
+      this.$http.post('/api/insTodo', obj).then((res) => {
+        // console.log(res.data);
+        this.selTodoList();
+      })
     },
-    parentDelTodo(id) {
-      var idx = this.todoList.findIndex(function(item) {
-        return item.id == id;
-      }); // 해당 인덱스를 찾는 방법
-      this.todoList.splice(idx, 1);
+
+    parentDelTodo(i_todo) {
+      // var idx = this.todoList.findIndex(function(item) {
+      //   return item.i_todo == id;
+      // }); // 해당 인덱스를 찾는 방법
+      // this.todoList.splice(idx, 1);
+      if(!confirm('정말 지우시겠습니까?')) {
+        return false;
+      }
+      this.$http.delete('/api/delTodo', {
+        params: {
+          i_todo: i_todo
+        }
+      }).then((res) => {
+        this.selTodoList();
+      })
     },
+
     parentClearAlltodo() {
-      this.todoList = [];
+      if(!confirm('정말 다 지우시겠습니까?')) {
+        return false;
+      }
+      this.$http.delete('/api/delTodo').then((res) => {
+        this.selTodoList();
+      })
     },
   }
 }

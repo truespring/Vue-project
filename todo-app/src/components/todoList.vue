@@ -1,10 +1,10 @@
 <template>
     <section>
         <ul>
-            <li class="shadow" v-for="item in todoList" :key="item.id">
+            <li class="shadow" v-for="item in todoList" :key="item.i_todo">
                 <font-awesome-icon class="checkBtn" icon="check" />
                 {{ item.todo }}
-                <font-awesome-icon class="removeBtn" icon="trash-alt" @click="removeItem(item.id)" />
+                <font-awesome-icon class="removeBtn" icon="trash-alt" @click="removeItem(item.i_todo)" />
             </li>
         </ul>
     </section>
@@ -13,9 +13,9 @@
 export default {
     props: ['todoList'],
     methods: {
-        removeItem(id) {
-            console.log('list id : ' + id)
-            this.$emit('removeItem', id)
+        removeItem(i_todo) {
+            // console.log('list id : ' + i_todo)
+            this.$emit('removeItem', i_todo)
         }
     }
 }
